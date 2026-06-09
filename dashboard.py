@@ -119,8 +119,8 @@ def show_dashboard():
             logout()
 
     credit_data = pd.read_csv("Dataset/default of credit card clients.csv")
-    model = joblib.load("credit_default_model.pkl")
-    scaler = joblib.load("scaler.pkl")
+    MODEL_PATH = os.path.join(os.path.dirname(__file__), "credit_default_model.pkl")
+    model = joblib.load(MODEL_PATH)
 
     customer = credit_data[credit_data["ID"] == user["ID"]].copy()
     if customer.empty:
