@@ -1,25 +1,13 @@
 import streamlit as st
 import pandas as pd
 
+
 def show_login():
 
     st.markdown("""
     <style>
         .stApp {
-            background: linear-gradient(
-                90deg,
-                rgba(42,123,155,1) 0%,
-                rgba(87,199,133,1) 50%,
-                rgba(237,221,83,1) 100%
-            );
-        }
-
-        div[data-baseweb="input"] {
-            width: 100% !important;
-        }
-
-        input {
-            box-sizing: border-box;
+            background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%)
         }
 
         h1 {
@@ -31,34 +19,18 @@ def show_login():
 
     users = pd.read_csv(
         "Dataset/Credentials.csv",
-        dtype={
-            "CARD_NO": str,
-            "ACCOUNT_NO": str
-        }
+        dtype={"CARD_NO": str, "ACCOUNT_NO": str}
     )
 
     col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
-
         st.markdown("<h1>🔐 Login</h1>", unsafe_allow_html=True)
 
-        email = st.text_input(
-            "Email ID",
-            key="login_email"
-        )
+        email = st.text_input("Email ID", key="login_email")
+        password = st.text_input("Password", type="password", key="login_password")
 
-        password = st.text_input(
-            "Password",
-            type="password",
-            key="login_password"
-        )
-
-        if st.button(
-            "Login",
-            width="stretch",
-            key="login_btn"
-        ):
+        if st.button("Login", use_container_width=True):
 
             user = users[
                 (users["EMAIL"] == email) &

@@ -24,92 +24,180 @@ def show_dashboard():
 
     st.markdown("""
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
-        .stApp {
-            background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+        /* ── Base ── */
+        html, body, .stApp {
+            font-family: 'Inter', sans-serif;
+            background: #F0F4FA;
         }
 
+        /* ── Sidebar ── */
+        [data-testid="stSidebar"] {
+            background: #0D1B2A !important;
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+        [data-testid="stSidebar"] * {
+            color: #CBD5E1 !important;
+        }
+        [data-testid="stSidebar"] strong {
+            color: #F1F5F9 !important;
+        }
+        [data-testid="stSidebar"] h3 {
+            color: #94A3B8 !important;
+            font-size: 11px !important;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-weight: 700 !important;
+            margin-bottom: 12px;
+        }
+        [data-testid="stSidebar"] .stButton > button {
+            background: rgba(255,255,255,0.06) !important;
+            color: #CBD5E1 !important;
+            border: 1px solid rgba(255,255,255,0.10) !important;
+            border-radius: 8px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            padding: 8px 14px !important;
+            transition: background 0.2s ease;
+            width: 100% !important;
+        }
+        [data-testid="stSidebar"] .stButton > button:hover {
+            background: rgba(255,255,255,0.12) !important;
+        }
+
+        /* ── Page header ── */
         .dashboard-title {
-            font-size: 34px;
+            font-size: 24px;
             font-weight: 800;
-            color: #102A43;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
+            color: #0D1B2A;
+            letter-spacing: -0.6px;
+            line-height: 1.2;
+            margin-bottom: 2px;
         }
-
+        .dashboard-title i {
+            color: #2563EB;
+            margin-right: 10px;
+        }
         .dashboard-subtitle {
-            font-size: 15px;
-            color: #627D98;
-            margin-bottom: 18px;
+            font-size: 13px;
+            color: #64748B;
+            font-weight: 500;
+            margin-bottom: 10px;
         }
 
+        /* ── Metric cards ── */
         .card-box {
-            border-radius: 18px;
-            padding: 20px 22px;
-            background: rgba(255,255,255,0.95);
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-            transition: all 0.25s ease;
+            border-radius: 14px;
+            padding: 16px 18px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
         }
-
         .card-box:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(15,23,42,0.10);
         }
 
         .metric-title {
-            font-size: 13px;
-            color: #64748B;
-            font-weight: 600;
-            margin-bottom: 6px;
+            font-size: 11px;
+            color: #94A3B8;
+            font-weight: 700;
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.9px;
         }
-
+        .metric-title i {
+            margin-right: 5px;
+            color: #2563EB;
+        }
         .metric-value {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
-            color: #0F172A;
+            color: #0D1B2A;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.5px;
             line-height: 1.2;
         }
 
+        /* ── Section titles ── */
         .section-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: #102A43;
-            margin-bottom: 10px;
-        }
-
-        .profile-item {
             font-size: 15px;
-            color: #334E68;
+            font-weight: 700;
+            color: #1E293B;
             margin-bottom: 10px;
+            letter-spacing: -0.2px;
+        }
+        .section-title i {
+            color: #2563EB;
+            margin-right: 7px;
         }
 
+        /* ── Profile & Risk cards ── */
+        .profile-item {
+            font-size: 13px;
+            color: #334E68;
+            margin-bottom: 7px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .fa-label {
+            color: #0D1B2A;
+            font-weight: 700;
+            min-width: 110px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .fa-label i {
+            color: #2563EB;
+            width: 14px;
+            text-align: center;
+        }
+
+        /* ── Risk badge ── */
         .risk-badge {
-            display: inline-block;
-            padding: 10px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
             border-radius: 999px;
             font-weight: 800;
-            font-size: 16px;
-            margin-top: 10px;
+            font-size: 13px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+        .risk-high   { color: #991B1B; background: #FEE2E2; border: 1px solid #FECACA; }
+        .risk-medium { color: #92400E; background: #FEF3C7; border: 1px solid #FDE68A; }
+        .risk-low    { color: #065F46; background: #D1FAE5; border: 1px solid #A7F3D0; }
+
+        /* ── Table ── */
+        div[data-testid="stDataFrame"],
+        div[data-testid="stTable"] {
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            border: 1px solid #E2E8F0 !important;
+            box-shadow: 0 1px 4px rgba(15,23,42,0.05) !important;
+            background: #fff !important;
         }
 
-        .risk-high { color: #B42318; background: #FEE4E2; }
-        .risk-medium { color: #B54708; background: #FEF0C7; }
-        .risk-low { color: #027A48; background: #D1FADF; }
-
-        .fa-label {
-            color: #102A43;
-            font-weight: 700;
+        /* ── Divider ── */
+        hr {
+            border: none !important;
+            border-top: 1px solid #E2E8F0 !important;
+            margin: 12px 0 !important;
         }
 
-        div[data-testid="stDataFrame"] {
-            border-radius: 14px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        /* ── Caption ── */
+        .stCaption {
+            font-size: 12px !important;
+            color: #94A3B8 !important;
+            font-family: 'JetBrains Mono', monospace !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -172,6 +260,49 @@ def show_dashboard():
     )
     st.divider()
 
+    # ── Row 1: Profile | Risk | Insights ──
+    col_profile, col_risk, col_insights = st.columns([1.1, 1, 1], gap="medium")
+
+    with col_profile:
+        st.markdown("<div class='section-title'><i class='fa-solid fa-user'></i> Customer Profile</div>",
+                    unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="card-box">
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-user"></i> Name:</span> {user['NAME']}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-envelope"></i> Email:</span> {user['EMAIL']}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-id-card"></i> Card No:</span> {user['CARD_NO']}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-building-columns"></i> Account No:</span> {user['ACCOUNT_NO']}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col_risk:
+        st.markdown("<div class='section-title'><i class='fa-solid fa-chart-line'></i> Risk Analysis</div>",
+                    unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="card-box">
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-bolt"></i> Prediction:</span> {"Default" if prediction == 1 else "No Default"}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-percent"></i> Probability:</span> {probability:.2%}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid {icon}"></i> Risk Level:</span></div>
+            <div class="risk-badge {risk_class}">{risk_level}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col_insights:
+        st.markdown("<div class='section-title'><i class='fa-solid fa-coins'></i> Financial Insights</div>",
+                    unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="card-box">
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-credit-card"></i> Credit Limit:</span> ₹ {customer['LIMIT_BAL'].iloc[0]:,.0f}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-file-invoice-dollar"></i> Total Bill:</span> ₹ {customer['TOTAL_BILL'].iloc[0]:,.0f}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-money-bill-wave"></i> Total Payment:</span> ₹ {customer['TOTAL_PAYMENT'].iloc[0]:,.0f}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-scale-balanced"></i> Pay Ratio:</span> {customer['PAYMENT_RATIO'].iloc[0]:.2f}</div>
+            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-clock"></i> Avg Delay:</span> {customer['AVG_DELAY'].iloc[0]:.2f}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Row 2: Metric Cards ──
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -198,51 +329,4 @@ def show_dashboard():
         </div>
         """, unsafe_allow_html=True)
 
-    st.write("")
-    st.divider()
-
-    left, right = st.columns([1.15, 1], gap="large")
-
-    with left:
-        st.markdown("<div class='section-title'><i class='fa-solid fa-user'></i> Customer Profile</div>",
-                    unsafe_allow_html=True)
-        st.markdown(f"""
-        <div class="card-box">
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-user"></i> Name:</span> {user['NAME']}</div>
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-envelope"></i> Email:</span> {user['EMAIL']}</div>
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-id-card"></i> Card No:</span> {user['CARD_NO']}</div>
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-building-columns"></i> Account No:</span> {user['ACCOUNT_NO']}</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with right:
-        st.markdown("<div class='section-title'><i class='fa-solid fa-chart-line'></i> Risk Analysis</div>",
-                    unsafe_allow_html=True)
-        st.markdown(f"""
-        <div class="card-box">
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-bolt"></i> Prediction:</span> {"Default" if prediction == 1 else "No Default"}</div>
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-percent"></i> Probability:</span> {probability:.2%}</div>
-            <div class="profile-item"><span class="fa-label"><i class="fa-solid {icon}"></i> Risk Level:</span></div>
-            <div class="risk-badge {risk_class}">{risk_level}</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.write("")
-    st.divider()
-
-    st.markdown("<div class='section-title'><i class='fa-solid fa-coins'></i> Financial Insights</div>",
-                unsafe_allow_html=True)
-
-    summary = pd.DataFrame({
-        "Metric": ["Credit Limit", "Total Bill", "Total Payment", "Payment Ratio", "Avg Delay"],
-        "Value": [
-            f"₹ {customer['LIMIT_BAL'].iloc[0]:,.0f}",
-            f"₹ {customer['TOTAL_BILL'].iloc[0]:,.0f}",
-            f"₹ {customer['TOTAL_PAYMENT'].iloc[0]:,.0f}",
-            f"{customer['PAYMENT_RATIO'].iloc[0]:.2f}",
-            f"{customer['AVG_DELAY'].iloc[0]:.2f}"
-        ]
-    })
-
-    st.table(summary)
     st.caption("🔐 Secure ML-powered credit risk evaluation system")

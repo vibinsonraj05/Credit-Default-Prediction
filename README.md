@@ -207,6 +207,13 @@ All customer profiles, credentials, email addresses, account numbers, and card n
 
 ---
 
+## 📊 Dashboard Preview
+
+![Dashboard Screenshot](templates/img.png)
+
+---
+
+
 # 👨‍💻 Author
 
 **Vibinson Raj G**
