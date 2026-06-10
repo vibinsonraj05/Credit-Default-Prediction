@@ -228,12 +228,3 @@ This project is provided for educational and portfolio purposes only. Unauthoriz
 
 ---
 
-# ⭐ Future Enhancements
-
-- Explainable AI (XAI) Integration
-- Database Connectivity
-- Admin Management Portal
-- Advanced Data Visualizations
-- Role-Based Access Control
-- Real-Time Risk Monitoring
-- Multi-Model Comparison Dashboard
