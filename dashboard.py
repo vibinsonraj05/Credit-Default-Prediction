@@ -244,9 +244,5 @@ def show_dashboard():
         ]
     })
 
-    st.dataframe(
-        summary,
-        width="stretch",
-        hide_index=True
-    )
+    st.table(summary)
     st.caption("🔐 Secure ML-powered credit risk evaluation system")
