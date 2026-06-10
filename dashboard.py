@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import joblib
-import os
 
 st.set_page_config(
     page_title="Credit Risk Dashboard",
@@ -10,9 +9,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 def logout():
     st.session_state.clear()
     st.rerun()
+
 
 def show_dashboard():
     if "user" not in st.session_state:
@@ -116,12 +117,12 @@ def show_dashboard():
     with st.sidebar:
         st.markdown("### Account")
         st.write(f"**User:** {user['NAME']}")
-        if st.button("Logout 🔒", use_container_width=True, key="logout_btn"):
+        if st.button("Logout 🔒", width="stretch", key="logout_btn"):
             logout()
 
     credit_data = pd.read_csv("Dataset/default of credit card clients.csv")
-    MODEL_PATH = os.path.join(os.path.dirname(__file__), "credit_default_model.pkl")
-    model = joblib.load(MODEL_PATH)
+    model = joblib.load("credit_default_model.pkl")
+    scaler = joblib.load("scaler.pkl")
 
     customer = credit_data[credit_data["ID"] == user["ID"]].copy()
     if customer.empty:
@@ -203,7 +204,8 @@ def show_dashboard():
     left, right = st.columns([1.15, 1], gap="large")
 
     with left:
-        st.markdown("<div class='section-title'><i class='fa-solid fa-user'></i> Customer Profile</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'><i class='fa-solid fa-user'></i> Customer Profile</div>",
+                    unsafe_allow_html=True)
         st.markdown(f"""
         <div class="card-box">
             <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-user"></i> Name:</span> {user['NAME']}</div>
@@ -214,7 +216,8 @@ def show_dashboard():
         """, unsafe_allow_html=True)
 
     with right:
-        st.markdown("<div class='section-title'><i class='fa-solid fa-chart-line'></i> Risk Analysis</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'><i class='fa-solid fa-chart-line'></i> Risk Analysis</div>",
+                    unsafe_allow_html=True)
         st.markdown(f"""
         <div class="card-box">
             <div class="profile-item"><span class="fa-label"><i class="fa-solid fa-bolt"></i> Prediction:</span> {"Default" if prediction == 1 else "No Default"}</div>
@@ -227,7 +230,8 @@ def show_dashboard():
     st.write("")
     st.divider()
 
-    st.markdown("<div class='section-title'><i class='fa-solid fa-coins'></i> Financial Insights</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'><i class='fa-solid fa-coins'></i> Financial Insights</div>",
+                unsafe_allow_html=True)
 
     summary = pd.DataFrame({
         "Metric": ["Credit Limit", "Total Bill", "Total Payment", "Payment Ratio", "Avg Delay"],
@@ -240,5 +244,9 @@ def show_dashboard():
         ]
     })
 
-    st.dataframe(summary, use_container_width=True, hide_index=True)
+    st.dataframe(
+        summary,
+        width="stretch",
+        hide_index=True
+    )
     st.caption("🔐 Secure ML-powered credit risk evaluation system")

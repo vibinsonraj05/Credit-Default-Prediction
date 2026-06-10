@@ -8,13 +8,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# Session state init
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-    st.session_state.user = None
+    st.session_state["logged_in"] = False
 
-# Routing
-if not st.session_state.logged_in:
-    show_login()
-else:
+if "user" not in st.session_state:
+    st.session_state["user"] = None
+
+if st.session_state["logged_in"]:
     show_dashboard()
+else:
+    show_login()
