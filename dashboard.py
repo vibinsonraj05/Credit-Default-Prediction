@@ -224,14 +224,14 @@ def show_dashboard():
         st.write(f"**User:** {user['NAME']}")
         st.markdown("---")
         st.markdown("### Model Info")
-        st.write("**Algorithm:** XGBoost")
+        st.write("**Algorithm:** Random Forest")        # updated: was XGBoost
         st.write("**Balanced via:** SMOTE")
         if st.button("Logout 🔒", key="logout_btn"):
             logout()
 
     # ── Load data & model ──
     credit_data = pd.read_csv("Dataset/default of credit card clients.csv")
-    model       = joblib.load("credit_default_model.pkl")
+    model       = joblib.load("credit_default_model.pkl")   # Random Forest (GridSearchCV tuned)
     scaler      = joblib.load("scaler.pkl")
 
     # Load tuned threshold (saved during training); fall back to 0.45 if not found
@@ -245,7 +245,7 @@ def show_dashboard():
         st.error("Customer record not found.")
         return
 
-    # ── Feature Engineering (must match training) ──
+    # ── Feature Engineering (must match training pipeline) ──
     customer["TOTAL_BILL"] = customer[
         ["BILL_AMT1","BILL_AMT2","BILL_AMT3","BILL_AMT4","BILL_AMT5","BILL_AMT6"]
     ].sum(axis=1)
@@ -260,7 +260,6 @@ def show_dashboard():
         ["PAY_1","PAY_2","PAY_3","PAY_4","PAY_5","PAY_6"]
     ].mean(axis=1)
 
-    # ── NEW: UTILIZATION feature ──
     customer["UTILIZATION"] = customer["TOTAL_BILL"] / (customer["LIMIT_BAL"] + 1)
 
     X_customer = customer.drop(["ID", "dpnm"], axis=1)
@@ -283,11 +282,11 @@ def show_dashboard():
         risk_class = "risk-low"
         risk_icon  = "✅"
 
-    utilization     = customer["UTILIZATION"].iloc[0]
-    payment_ratio   = customer["PAYMENT_RATIO"].iloc[0]
-    avg_delay       = customer["AVG_DELAY"].iloc[0]
-    util_pct        = min(utilization * 100, 100)
-    util_color      = "#EF4444" if util_pct > 70 else "#F59E0B" if util_pct > 40 else "#10B981"
+    utilization   = customer["UTILIZATION"].iloc[0]
+    payment_ratio = customer["PAYMENT_RATIO"].iloc[0]
+    avg_delay     = customer["AVG_DELAY"].iloc[0]
+    util_pct      = min(utilization * 100, 100)
+    util_color    = "#EF4444" if util_pct > 70 else "#F59E0B" if util_pct > 40 else "#10B981"
 
     # ── Page Header ──
     st.markdown(
@@ -295,7 +294,7 @@ def show_dashboard():
         unsafe_allow_html=True
     )
     st.markdown(
-        "<div class='dashboard-subtitle'>ML-powered risk evaluation · SMOTE-balanced XGBoost · Threshold-tuned predictions</div>",
+        "<div class='dashboard-subtitle'>ML-powered risk evaluation · SMOTE-balanced Random Forest · GridSearchCV-tuned · Threshold-optimised predictions</div>",
         unsafe_allow_html=True
     )
     st.divider()
@@ -323,7 +322,7 @@ def show_dashboard():
             <div class="profile-item"><span class="fa-label">🎯 Threshold:</span> {best_threshold:.2f}</div>
             <div class="profile-item"><span class="fa-label">{risk_icon} Risk Level:</span></div>
             <div class="risk-badge {risk_class}">{risk_level}</div>
-            <div class="threshold-info">Threshold tuned via precision-recall on SMOTE train set</div>
+            <div class="threshold-info">Random Forest · GridSearchCV tuned · SMOTE balanced</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -341,7 +340,7 @@ def show_dashboard():
 
     st.divider()
 
-    # ── Row 2: Metric Cards (with UTILIZATION) ──
+    # ── Row 2: Metric Cards ──
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
@@ -389,7 +388,6 @@ def show_dashboard():
     chart_col1, chart_col2 = st.columns(2, gap="medium")
 
     with chart_col1:
-        # Bill vs Payment trend
         fig1 = go.Figure()
         fig1.add_trace(go.Bar(
             x=months, y=bill_amts,
@@ -418,7 +416,6 @@ def show_dashboard():
         st.plotly_chart(fig1, use_container_width=True)
 
     with chart_col2:
-        # Payment delay trend
         delay_colors = ["#EF4444" if d > 0 else "#10B981" for d in pay_delays]
         fig2 = go.Figure()
         fig2.add_trace(go.Scatter(
@@ -505,4 +502,4 @@ def show_dashboard():
         )
         st.plotly_chart(fig4, use_container_width=True)
 
-    st.caption("🔐 Secure ML-powered credit risk evaluation · XGBoost + SMOTE · Threshold-tuned predictions")
+    st.caption("🔐 Secure ML-powered credit risk evaluation · Random Forest + SMOTE · GridSearchCV-tuned predictions")
