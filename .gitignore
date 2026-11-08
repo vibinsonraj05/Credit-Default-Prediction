@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.env
+.env.local
+ml-service/.env
+ml-service/data/Credentials.csv
+ml-service/__pycache__/
+ml-service/.venv/

@@ -1,0 +1,4 @@
+.env
+data/Credentials.csv
+__pycache__/
+.venv/
