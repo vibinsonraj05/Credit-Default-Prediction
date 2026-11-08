@@ -70,3 +70,13 @@ Open `http://localhost:3000/login` and sign in using the email/password from you
 This is an educational demo using a supplied credentials dataset. The CSV contains plaintext demo passwords, so keep it local, restrict access to it, and never commit or upload it. For production, migrate to a proper identity provider or a database with Argon2id/bcrypt password hashes, HTTPS, rate limiting, secure HttpOnly cookies, audit logging and a privacy/security review. The API computes a SHA-256 digest of each supplied password for constant-time comparison; this is not a substitute for production password storage.
 
 The credit dataset is historical. A prediction for one of its existing IDs is a retrospective demonstration, not a forecast of future default or a real lending decision.
+
+
+## 👨‍💻 Developer
+
+**Vibinson Raj G.**
+
+- GitHub: https://github.com/vibinsonraj05
+- LinkedIn: https://www.linkedin.com/in/vibinson-raj-g/
+
+---
